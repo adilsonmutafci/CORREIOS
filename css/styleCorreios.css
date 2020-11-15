@@ -1,0 +1,101 @@
+body{
+	background-color:#c7c7c7;
+}
+
+#divLogo{	 	
+	width:90%;
+	margin-top : 20px; 
+	margin-left: auto;
+	margin-right: auto;
+	background-color:#ffdd00;
+	border-radius: 10px;
+	box-shadow: 0 0.3em 1em #000;	
+}
+
+article{
+	width:90%;	
+	margin-top : 20px; 
+	margin-left: auto;
+	margin-right: auto;	
+	
+	padding-right: 1%;
+	padding-left: 1%;
+	border-radius: 10px;
+	background-color:#fff;	
+	box-shadow: 0 0.3em 1em #000;	    
+}
+
+#art10 h1{
+	text-align: left;
+	font-family: Georgia, serif;
+	font-weight: bold;	
+}
+
+#art10 p {	
+	text-align: left;	
+}
+
+#ImgLogo { 
+    display: block;    	
+	margin-left: auto;
+	margin-right: auto; 
+}
+
+
+
+footer{
+	width:90%;	
+	margin-top : 20px; 
+	margin-left: auto;
+	margin-right: auto;	
+	
+	padding-top:1%;	
+	padding-left:1%;
+	padding-right:1%;
+	padding-bottom:1%;	
+	
+	border-radius: 10px;
+	background-color:#fff;	
+	box-shadow: 0 0.3em 1em #000;	    
+}
+
+
+
+#divAviso{	
+	padding-top:1%;	
+	padding-left:1%;
+	padding-right:1%;
+	padding-bottom:1%;
+	
+	border-radius: 10px;
+	width:auto;
+	height:auto;
+
+	background-color : #ff8484;		
+}
+
+#divAutor p {
+	padding-top:1%;
+	text-align: center;	
+}
+
+
+
+.form-row{
+		padding-top: 5px;	
+}
+
+label{
+	font-weight: bold;	
+}
+
+input:required{
+	background-color: #f9f9ae;	
+}
+
+.teste {
+	border-color: red; 
+    border-style: solid; 
+}
+
+

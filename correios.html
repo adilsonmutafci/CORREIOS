@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Correios - Consulta CEP</title>
+	<meta charset="utf-8"/>	
+	<meta name="keywords" content="html5,css,bootstrap,javascript"/>
+	<meta name="description" content="consulmir serviço do webservice dos correios."/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">	
+	<!-- CSS -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+	<link rel="stylesheet" href="./css/styleCorreios.css" type="text/css"/>
+	
+	
+</head>
+<body>
+	<header>
+	    <div id="divLogo" name="divLogo"> 
+			<img id="ImgLogo" name="ImgLogo" src="./image/logoCorreios.jpg"  alt="Logo tipo dos CORREIOS" > 		
+		</div>		
+	</header>
+	<nav>		
+	</nav>
+	<section>
+		<article id="art10">
+			<h1>Consulta CEP</h1>
+			<br/>
+			<p>Este tutorial tem por objetivo exemplificar o consumo do webservice dos CORREIOS com somente o Javascript.
+			   O exemplo é retrito apenas a consulta de CEP.</p><br/>	
+		</article>
+		
+		<article>
+			<form action="#">
+				<div class="form-row">
+					<div class="form-group col-md-6">
+						<label for="nome">Nome completo:</label>
+						<input type="text" class="form-control" id="nome" placeholder="Informe o nome." required >
+					</div>
+					
+					<div class="form-group col-md-6">
+						<label for="nomeMae">Nome completo do responsável:</label>
+						<input type="text" class="form-control" id="nomeMae" placeholder=" informe nome completo do responsável." />
+					</div>
+				</div>
+				
+				<div class="form-row">	
+					<div class="form-group col-md-2">	
+						<div class="form-group" >
+							<label for="cep">CEP:</label>
+							<input type="number" class="form-control" id="cep" placeholder="Informe CEP." required min="0">										
+						</div>						
+					</div>				
+					
+					<div class="form-group" >
+						<div class="col-md-1">								 
+								<label for="btnCorreios"></label> 
+								<button type="button"  id="btnCorreios" class="btn btn-outline-primary" onclick="findCEP()">							
+									<img  src="./image/btnCorreios.png" alt="pesquisar o CEP."  width="30" height="30" ></img>
+							    </button>							
+						</div>			
+					</div>				
+				
+					<div class="form-group col-md-5">
+						<div class="form-group">
+							<label for="end">Endereço:</label>
+							<input type="text" class="form-control" id="end" placeholder=" informe o endereço." disabled>
+						</div>
+					</div>		
+					<div class="form-group col-md-1">
+						<div class="form-group">
+							<label for="end">Número:</label>
+							<input type="text" class="form-control" id="numero" placeholder=" informe o número." required>
+						</div>
+					</div>							
+
+					<div class="form-group col-md-3">	
+						<div class="form-group">
+							<label for="complemento">Complemento:</label>
+							<input type="text" class="form-control" id="complemento" placeholder=" informe o complemento." disabled>
+						</div>
+					</div>			
+				</div>	
+
+				
+				<div class="form-row">
+					<div class="form-group col-md-5">					
+						<div class="form-group">
+							<label for="bairro">Bairro:</label>
+							<input type="text" class="form-control" id="bairro" placeholder=" informe o bairro." disabled>
+						</div>
+					</div>				
+					<div class="form-group col-md-5">
+						<div class="form-group">
+							<label for="cidade">Cidade:</label>
+							<input type="text" class="form-control" id="cidade" placeholder=" informe a cidade." disabled>
+						</div>
+					</div>
+					
+					<div class="form-group col-md-2">						
+						<div class="form-group">
+							<label for="uf">UF:</label>
+							<input type="text" class="form-control" id="uf" placeholder=" informe a Unidade Federativa." disabled>
+						</div>
+					</div>							
+				</div>				
+			</form>
+		</article> 
+	</section>
+	<aside></aside>
+	<footer>
+		<div id="divAviso">
+			<p id="pAviso">teste</p>			
+		</div>
+	
+	
+		<div id="divAutor">
+			<p>Desenvolvido por: Adilson de Castro Mutafci &copy</p>
+		<div>
+	</footer>	
+</body>
+<script type="text/javascript">
+
+	window.onload = initPage(false);
+	function initPage(display){
+		_aviso(display,'');
+	}
+
+	function _aviso(display,message){
+		let _divAviso = document.getElementById("divAviso");	
+		let _pAviso   = document.getElementById("pAviso");	
+		_divAviso.style.display = (display)? "block" : "none";		
+		_pAviso.textContent = message;		
+	}
+	
+	// progresso de transferências do servidor para o cliente (downloads)
+	function updateProgress (oEvent) {		
+		let percentComplete = 0;
+		let msg = "Processando transferência. Por favor, aguarde...";
+		if (oEvent.lengthComputable) {
+			percentComplete = oEvent.loaded / oEvent.total * 100;				 
+			msg += `(${percentComplete} %)`;
+		}; 
+		_aviso(true,msg);			
+	}
+ 	
+	
+	function transferComplete(evt) {
+		let msg = "A transferência foi concluída.";
+		_aviso(false,msg);				 
+	}
+
+	function transferFailed(evt) {	
+		let msg = "Um erro ocorreu durante a transferência do arquivo.";	
+		console.log(evt); //akki
+		_aviso(true,msg);			
+	}
+
+	function transferCanceled(evt) {
+		let msg = "A transferência foi cancelada pelo usuário.";
+		_aviso(true,msg);	
+	}	
+	
+
+	function findCEP(){		
+		let _msg = '';	
+		let _CEP = document.getElementById("cep").value;		
+		
+		if(!_CEP || _CEP.length!=8)
+		{
+			_aviso(true,'Por favor, informe um CEP válido');		
+			return;
+		}
+	
+		_aviso(true,'Procurando CEP no WebService dos CORREIOS. Por favor, aguarde.');		
+	
+	
+		let correio_url = 'https://apps.correios.com.br/SigepMasterJPA/AtendeClienteService/AtendeCliente?wsdl';
+		let cors_api_url = 'https://cors-anywhere.herokuapp.com/';
+		let url = cors_api_url + correio_url;
+		let xhttp = new XMLHttpRequest();  
+		
+		xhttp.addEventListener("progress", updateProgress, false);
+		xhttp.addEventListener("load", transferComplete, false);
+		xhttp.addEventListener("error", transferFailed, false);
+		xhttp.addEventListener("abort", transferCanceled, false); 		  
+  
+		// setCORs(); 
+		
+		xhttp.onreadystatechange = function() {			
+			if (this.readyState == 0 ){
+				_msg = '0: request not initialized';
+				//_aviso(false,_msg);			
+			}
+			else if (this.readyState == 1 ){
+				_msg = '1: server connection established';			
+				//_aviso(true,_msg);						
+			}
+			else if (this.readyState == 2 ){
+				_msg = '2: request received';
+				//_aviso(true,_msg);					
+			}
+			else if (this.readyState == 3 ){
+				_msg = '3: processing request';
+				//_aviso(true,_msg);			
+			
+			}else if (this.readyState == 4 && this.status == 200) {		
+					dataCEP = XMLtoElements(this.responseXML);
+					SetElements(dataCEP);
+					_aviso(false,'');						
+			}
+		};
+		
+		xmlParam =  `<?xml version="1.0"?>  
+			         <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cli="http://cliente.bean.master.sigep.bsb.correios.com.br/">   
+				     <soapenv:Header />  
+				     <soapenv:Body>      
+				     	  <cli:consultaCEP>   
+				     	     <cep>${_CEP}</cep>   
+				     	  </cli:consultaCEP>  
+				     </soapenv:Body>     
+				     </soapenv:Envelope>`; 
+		
+		
+		xhttp.open("POST", url, true);
+		xhttp.setRequestHeader('Content-type', 'application/ecmascript'); 		  
+		xhttp.send(xmlParam); 		
+	};
+	
+	function XMLtoElements(xmlDoc){
+		let _end           = xmlDoc.getElementsByTagName("end")[0].textContent;				
+		let _complemento2  = xmlDoc.getElementsByTagName("complemento2")[0].textContent;		
+		let _bairro        = xmlDoc.getElementsByTagName("bairro")[0].textContent;				
+		let _cidade	       = xmlDoc.getElementsByTagName("cidade")[0].textContent;				
+		let _uf            = xmlDoc.getElementsByTagName("uf")[0].textContent;				
+		let _cep           = xmlDoc.getElementsByTagName("cep")[0].textContent;		
+		
+		return {
+			end         : _end,         
+			complemento : _complemento2,
+			bairro      : _bairro,      
+			cidade	    : _cidade,	     
+			uf          : _uf,          
+			cep         : _cep       		
+		}				
+	} 
+
+	function SetElements(dataCEP){			
+		let _end           = document.getElementById("end");
+		let _complemento2  = document.getElementById("complemento");
+		let _bairro        = document.getElementById("bairro");
+		let _cidade	       = document.getElementById("cidade");
+		let _uf            = document.getElementById("uf");
+		let _cep           = document.getElementById("cep");
+		//	
+		_end.value          = dataCEP.end;         
+		_complemento2.value = dataCEP.complemento;
+		_bairro.value       = dataCEP.bairro;     
+		_cidade.value       = dataCEP.cidade;	   
+		_uf.value           = dataCEP.uf;         
+		_cep.value          = dataCEP.cep;        				
+	}
+
+	function setCORs(){	
+		var cors_api_host = 'cors-anywhere.herokuapp.com';
+		var cors_api_url = 'https://' + cors_api_host + '/';
+		var slice = [].slice;
+		var origin = window.location.protocol + '//' + window.location.host;
+		var open = XMLHttpRequest.prototype.open;
+		XMLHttpRequest.prototype.open = function() {
+			var args = slice.call(arguments);
+			var targetOrigin = /^https?:\/\/([^\/]+)/i.exec(args[1]);
+			if (targetOrigin && targetOrigin[0].toLowerCase() !== origin &&
+				targetOrigin[1] !== cors_api_host) {
+				args[1] = cors_api_url + args[1];
+			}
+			return open.apply(this, args);
+		};		
+	}
+</script>
+
+</html>
